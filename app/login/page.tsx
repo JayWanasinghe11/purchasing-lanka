@@ -1,9 +1,16 @@
 "use client";
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function LoginPage() {
+  const router = useRouter();
   const [loadingText, setLoadingText] = useState("");
   const message = "ESTABLISHING SECURE CONNECTION...";
+
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    router.push('/dashboard'); 
+  };
 
   useEffect(() => {
     let i = 0;
@@ -11,15 +18,13 @@ export default function LoginPage() {
       setLoadingText(message.slice(0, i));
       i++;
       if (i > message.length) clearInterval(interval);
-    }, 500);
+    }, 100);
     return () => clearInterval(interval);
   }, []);
 
   return (
     <div className="min-h-screen bg-[#020202] flex items-center justify-center font-mono p-4">
       <div className="w-full max-w-md border border-zinc-900 bg-zinc-950/40 p-8 shadow-2xl backdrop-blur-md">
-        
-        {/* Terminal Header */}
         <div className="mb-8 border-l-2 border-emerald-500 pl-4">
           <p className="text-[10px] text-emerald-500 tracking-[0.3em] mb-1 animate-pulse">
             {loadingText}
@@ -29,10 +34,11 @@ export default function LoginPage() {
           </h2>
         </div>
 
-        <form className="space-y-6">
+        <form onSubmit={handleLogin} className="space-y-6">
           <div className="space-y-2">
             <label className="text-[10px] text-zinc-500 uppercase tracking-widest">Identification</label>
             <input 
+              required
               type="text" 
               placeholder="ENTER ID..." 
               className="w-full bg-zinc-900/50 border border-zinc-800 p-3 text-sm text-zinc-300 focus:outline-none focus:border-zinc-600 transition"
@@ -42,21 +48,25 @@ export default function LoginPage() {
           <div className="space-y-2">
             <label className="text-[10px] text-zinc-500 uppercase tracking-widest">Access Key</label>
             <input 
+              required
               type="password" 
               placeholder="••••••••" 
               className="w-full bg-zinc-900/50 border border-zinc-800 p-3 text-sm text-zinc-300 focus:outline-none focus:border-zinc-600 transition"
             />
           </div>
 
-          <button className="w-full py-4 bg-white text-black text-[10px] font-bold uppercase tracking-[0.4em] hover:bg-emerald-500 transition-all duration-700">
+          <button 
+            type="submit"
+            className="w-full py-4 bg-white text-black text-[10px] font-bold uppercase tracking-[0.4em] hover:bg-emerald-500 transition-all duration-700"
+          >
             Verify & Authenticate
           </button>
         </form>
 
-        <div className="mt-10 opacity-30">
-          <p className="text-[8px] text-center text-zinc-500 tracking-widest leading-loose">
-            PURCHASING LANKA INTERNATIONAL <br/>
-            ENCRYPTED NETWORK | 2026.04.24
+        <div className="mt-10 opacity-30 text-center">
+          <p className="text-[8px] text-zinc-500 tracking-widest leading-loose uppercase">
+            Purchasing Lanka International <br/>
+            Encrypted Network | 2026.04.24
           </p>
         </div>
       </div>
